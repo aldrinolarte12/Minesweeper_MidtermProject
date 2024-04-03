@@ -1,0 +1,10 @@
+{
+    "mode": "Easy",
+    "player1": "green",
+    "player2": "yellow",
+    "font": "Times New Roman",
+    "sound": [
+        "on",
+        "green"
+    ]
+}
