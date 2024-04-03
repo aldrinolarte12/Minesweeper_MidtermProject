@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from winsound import *
 import random
 import json
@@ -73,12 +74,20 @@ def menu():
     root.iconbitmap(resource_path(r"img\bomb.ico"))
     root.configure(bg='#172a3a')
 
+    title_label = Label(root, text="Minesweeper", font=(data['font'], 24, "bold"), bg='#172a3a', fg='white')
+    title_label.grid(row=0, column=0, columnspan=3, padx=30, pady=10, sticky=W + E)
+
     photo_start = PhotoImage(file=resource_path(r"img\start.png")).subsample(2, 2)
     photo_setting = PhotoImage(file=resource_path(r"img\setting.png")).subsample(2, 2)
     photo_exit = PhotoImage(file=resource_path(r"img\exit.png")).subsample(2, 2)
 
     def action(task):
-        root.destroy()
+        if task == 'exit':
+            if messagebox.askyesno("Exit", "Are you sure you want to exit?"):
+                root.destroy()
+                sounds('exit')
+        else:
+            root.destroy()
 
         if task == 'start':
             sounds('start')
@@ -86,17 +95,17 @@ def menu():
         elif task == 'setting':
             sounds('click2')
             setting()
-        elif task == 'exit':
-            sounds('exit')
 
     Button(root, text=' Start', image=photo_start, compound='left', font=big_font, bg='grey',
-           command=lambda: action('start')).grid(row=0, column=0, ipadx=100, padx=30, pady=30, sticky=W + E)
+           command=lambda: action('start')).grid(row=1, column=0, ipadx=100, padx=30, pady=30, sticky=W + E)
     Button(root, text=' Setting', image=photo_setting, compound='left', font=big_font, bg='grey',
-           command=lambda: action('setting')).grid(row=1, column=0, padx=30, sticky=W + E)
+           command=lambda: action('setting')).grid(row=2, column=0, padx=30, sticky=W + E)
     Button(root, text=' Exit', image=photo_exit, compound='left', font=big_font, bg='grey',
-           command=lambda: action('exit')).grid(row=2, column=0, padx=30, pady=30, sticky=W + E)
+           command=lambda: action('exit')).grid(row=3, column=0, padx=30, pady=30, sticky=W + E)
 
     root.mainloop()
+
+
 
 
 def setting():
@@ -206,7 +215,7 @@ def setting():
             data['player1'] = pl1_color_var.get()
             data['player2'] = pl2_color_var.get()
 
-        with open(resource_path(r'data\data.json'), 'w') as file:
+        with open(resource_path(r'data.json'), 'w') as file:
             json.dump(data, file, indent=4)
 
         sett.destroy()
